@@ -7,10 +7,10 @@ const AI_NAMES = [
   'Ghost', 'Cipher', 'Eclipse', 'Obsidian', 'Wraith'
 ]
 
-export function createPlayers(numOpponents: number, difficulty: AIDifficulty): Player[] {
+export function createPlayers(numOpponents: number, difficulty: AIDifficulty, playerName?: string): Player[] {
   const players: Player[] = [{
     id: 'player',
-    name: 'You',
+    name: playerName || 'You',
     type: 'human',
     chips: 1000,
     holeCards: [],
@@ -40,8 +40,8 @@ export function createPlayers(numOpponents: number, difficulty: AIDifficulty): P
   return players
 }
 
-export function createInitialState(numOpponents: number, difficulty: AIDifficulty): GameState {
-  const players = createPlayers(numOpponents, difficulty)
+export function createInitialState(numOpponents: number, difficulty: AIDifficulty, playerName?: string): GameState {
+  const players = createPlayers(numOpponents, difficulty, playerName)
   players[0].isDealer = true
   return {
     players,
@@ -79,6 +79,7 @@ export function startNewHand(state: GameState, deck: DeckManager): GameState {
     isAllIn: false,
     isActive: p.chips > 0,
     currentBet: 0,
+    lastAction: undefined,
   }))
 
   // Rotate dealer
@@ -222,8 +223,10 @@ export function applyAction(
   switch (action) {
     case 'fold':
       player.isFolded = true
+      player.lastAction = 'Fold'
       break
     case 'check':
+      player.lastAction = 'Check'
       break
     case 'call': {
       const callAmount = Math.min(maxBet - player.currentBet, player.chips)
@@ -231,6 +234,7 @@ export function applyAction(
       newState.pot += callAmount
       player.currentBet += callAmount
       if (player.chips === 0) player.isAllIn = true
+      player.lastAction = `Call $${callAmount}`
       break
     }
     case 'raise': {
@@ -242,6 +246,7 @@ export function applyAction(
       player.currentBet += totalCost
       newState.minimumRaise = totalRaise
       if (player.chips === 0) player.isAllIn = true
+      player.lastAction = `Raise $${totalCost}`
       // A raise resets acted for everyone except the raiser
       newState.actedThisRound = new Set([player.id])
       break
@@ -252,6 +257,7 @@ export function applyAction(
       player.currentBet += allInAmount
       player.chips = 0
       player.isAllIn = true
+      player.lastAction = `All-In $${allInAmount}`
       // If all-in is effectively a raise, reset acted
       if (player.currentBet > maxBet) {
         newState.actedThisRound = new Set([player.id])

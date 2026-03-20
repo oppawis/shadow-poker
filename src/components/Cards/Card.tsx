@@ -13,7 +13,7 @@ const SUIT_SYMBOLS: Record<string, string> = {
 }
 
 const SUIT_COLORS: Record<string, string> = {
-  hearts: '#e53e3e', diamonds: '#e53e3e', clubs: '#e0e0e0', spades: '#e0e0e0',
+  hearts: '#e53e3e', diamonds: '#e53e3e', clubs: '#1a1a2e', spades: '#1a1a2e',
 }
 
 export default function CardComponent({ card, faceDown, glowing, small }: CardProps) {

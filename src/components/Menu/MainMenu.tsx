@@ -28,6 +28,7 @@ export default function MainMenu({ onPlay, onTutorial, onStats }: MainMenuProps)
             <span className="title-poker">POKER</span>
           </h1>
           <p className="game-subtitle">Texas Hold'em</p>
+          <p className="game-credit">made by Op - Reg BD</p>
         </div>
 
         <div className="menu-buttons">

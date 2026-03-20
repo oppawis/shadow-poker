@@ -29,7 +29,7 @@ export default function GameScreen({
   return (
     <div className="game-screen">
       <div className="game-header">
-        <span className="game-logo">SHADOW POKER</span>
+        <span className="game-logo">SHADOW POKER <span style={{ fontSize: '10px', color: '#888', fontWeight: 400 }}>by Op - Reg BD</span></span>
         <button className="quit-btn" onClick={onQuit}>✕ Quit</button>
       </div>
 

@@ -55,9 +55,10 @@ export default function PokerTable({ gameState, showAllCards }: PokerTableProps)
           />
         ))}
 
-        {/* Human player's hand - large and prominent */}
+        {/* Human player's hand - side panel */}
         {humanPlayer && humanPlayer.holeCards.length > 0 && (
           <div className={`human-hand ${isHumanActive ? 'your-turn' : ''} ${humanPlayer.isFolded ? 'folded' : ''}`}>
+            <span className="hand-label">YOUR HAND</span>
             <div className="human-hand-cards">
               {humanPlayer.holeCards.map((card, i) => (
                 <CardComponent

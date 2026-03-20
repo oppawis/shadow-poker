@@ -64,22 +64,57 @@ export default function ActionBar({ gameState, callAmount, canCheck, isProcessin
         )}
 
         <div className="raise-group">
-          <button
-            className="action-btn raise"
-            onClick={() => onAction('raise', raiseAmount)}
-            disabled={disabled || raiseAmount > maxRaise}
-          >
-            Raise ${raiseAmount}
-          </button>
-          <input
-            type="range"
-            className="raise-slider"
-            min={minRaise}
-            max={maxRaise}
-            value={raiseAmount}
-            onChange={e => setRaiseAmount(Number(e.target.value))}
-            disabled={disabled}
-          />
+          <div className="quick-raise-row">
+            <button
+              className="quick-raise-btn"
+              onClick={() => setRaiseAmount(Math.max(minRaise, Math.floor(gameState.pot * 0.25)))}
+              disabled={disabled}
+            >
+              25%
+            </button>
+            <button
+              className="quick-raise-btn"
+              onClick={() => setRaiseAmount(Math.max(minRaise, Math.floor(gameState.pot * 0.33)))}
+              disabled={disabled}
+            >
+              33%
+            </button>
+            <button
+              className="quick-raise-btn"
+              onClick={() => setRaiseAmount(Math.max(minRaise, Math.floor(gameState.pot * 0.5)))}
+              disabled={disabled}
+            >
+              50%
+            </button>
+            <button
+              className="quick-raise-btn"
+              onClick={() => setRaiseAmount(Math.max(minRaise, gameState.pot))}
+              disabled={disabled}
+            >
+              Pot
+            </button>
+          </div>
+          <div className="raise-input-row">
+            <input
+              type="number"
+              className="raise-input"
+              min={minRaise}
+              max={maxRaise}
+              value={raiseAmount}
+              onChange={e => {
+                const val = Number(e.target.value)
+                if (!isNaN(val)) setRaiseAmount(Math.min(Math.max(val, 0), maxRaise))
+              }}
+              disabled={disabled}
+            />
+            <button
+              className="action-btn raise"
+              onClick={() => onAction('raise', raiseAmount)}
+              disabled={disabled || raiseAmount < minRaise || raiseAmount > maxRaise}
+            >
+              Raise
+            </button>
+          </div>
         </div>
 
         <button

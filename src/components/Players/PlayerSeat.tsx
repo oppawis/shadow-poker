@@ -33,6 +33,11 @@ export default function PlayerSeat({ player, isActive, isHuman, position, totalP
           <span className="player-bet">Bet: ${player.currentBet}</span>
         )}
       </div>
+      {player.lastAction && (
+        <div className={`last-action ${player.lastAction.startsWith('Fold') ? 'action-fold' : player.lastAction.startsWith('Raise') || player.lastAction.startsWith('All') ? 'action-raise' : 'action-neutral'}`}>
+          {player.lastAction}
+        </div>
+      )}
       {!isHuman && (
         <div className="player-cards">
           {player.holeCards.map((card, i) => (

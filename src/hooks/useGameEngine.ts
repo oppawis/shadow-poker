@@ -124,8 +124,8 @@ export function useGameEngine() {
     return currentState
   }, [resolveHand])
 
-  const startGame = useCallback(async (numOpponents: number, difficulty: AIDifficulty) => {
-    const state = createInitialState(numOpponents, difficulty)
+  const startGame = useCallback(async (numOpponents: number, difficulty: AIDifficulty, playerName?: string) => {
+    const state = createInitialState(numOpponents, difficulty, playerName)
     const newState = startNewHand(state, deckRef.current)
     setGameState(newState)
     setScreen('game')

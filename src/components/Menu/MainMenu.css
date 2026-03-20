@@ -81,6 +81,14 @@
   margin-top: 16px;
 }
 
+.game-credit {
+  font-size: 12px;
+  color: #666;
+  letter-spacing: 2px;
+  margin-top: 12px;
+  font-style: italic;
+}
+
 .menu-buttons {
   display: flex;
   flex-direction: column;

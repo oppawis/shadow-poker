@@ -72,7 +72,7 @@ A single-player Texas Hold'em No-Limit poker game with a dark, mysterious casino
 ### 3.1 Difficulty Levels
 
 | Level | Behavior |
-|-------|----------|
+| --- | --- |
 | **Easy** | Plays passively, rarely bluffs, calls too often, makes basic mistakes, limited position awareness |
 | **Medium** | Balanced play, occasional bluffs, understands pot odds, moderate position awareness, some hand reading |
 | **Hard** | Aggressive and strategic, calculates pot odds, bluffs intelligently, reads betting patterns, strong positional play |
@@ -150,7 +150,7 @@ A single-player Texas Hold'em No-Limit poker game with a dark, mysterious casino
 
 ### 5.1 Sound Effects
 | Event | Sound |
-|-------|-------|
+| --- | --- |
 | Card deal | Crisp card slide/snap |
 | Card flip | Paper flip sound |
 | Chip bet/call | Ceramic chip click/stack |

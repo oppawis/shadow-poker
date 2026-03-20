@@ -24,6 +24,7 @@ export interface Player {
   currentBet: number
   avatar?: string
   difficulty?: AIDifficulty
+  lastAction?: string
 }
 
 // Game state types

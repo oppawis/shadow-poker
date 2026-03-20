@@ -3,19 +3,32 @@ import { AIDifficulty } from '../../types'
 import './GameSetup.css'
 
 interface GameSetupProps {
-  onStart: (opponents: number, difficulty: AIDifficulty) => void
+  onStart: (opponents: number, difficulty: AIDifficulty, playerName: string) => void
   onBack: () => void
 }
 
 export default function GameSetup({ onStart, onBack }: GameSetupProps) {
   const [opponents, setOpponents] = useState(3)
   const [difficulty, setDifficulty] = useState<AIDifficulty>('medium')
+  const [playerName, setPlayerName] = useState('')
 
   return (
     <div className="game-setup">
       <button className="back-btn" onClick={onBack}>← Back</button>
 
       <h2 className="setup-title">Game Setup</h2>
+
+      <div className="setup-section">
+        <label className="setup-label">Your Name</label>
+        <input
+          type="text"
+          className="name-input"
+          placeholder="Enter your name..."
+          value={playerName}
+          onChange={e => setPlayerName(e.target.value)}
+          maxLength={16}
+        />
+      </div>
 
       <div className="setup-section">
         <label className="setup-label">Number of Opponents</label>
@@ -57,7 +70,7 @@ export default function GameSetup({ onStart, onBack }: GameSetupProps) {
         <p>Blinds: $5 / $10</p>
       </div>
 
-      <button className="start-btn" onClick={() => onStart(opponents, difficulty)}>
+      <button className="start-btn" onClick={() => onStart(opponents, difficulty, playerName.trim() || 'You')}>
         ♠ Start Game
       </button>
     </div>
