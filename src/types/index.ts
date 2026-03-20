@@ -42,6 +42,7 @@ export interface GameState {
   bigBlind: number
   handNumber: number
   minimumRaise: number
+  actedThisRound: Set<string>
 }
 
 export interface SidePot {

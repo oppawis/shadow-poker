@@ -55,6 +55,7 @@ export function createInitialState(numOpponents: number, difficulty: AIDifficult
     bigBlind: 10,
     handNumber: 0,
     minimumRaise: 10,
+    actedThisRound: new Set(),
   }
 }
 
@@ -68,6 +69,7 @@ export function startNewHand(state: GameState, deck: DeckManager): GameState {
   newState.sidePots = []
   newState.currentPhase = 'pre-flop'
   newState.minimumRaise = newState.bigBlind
+  newState.actedThisRound = new Set()
 
   // Reset players
   newState.players = state.players.map(p => ({
@@ -126,9 +128,10 @@ export function findNextActive(players: Player[], fromIndex: number): number {
 export function advancePhase(state: GameState, deck: DeckManager): GameState {
   const newState = { ...state }
 
-  // Reset bets
+  // Reset bets and acted tracking
   newState.players = newState.players.map(p => ({ ...p, currentBet: 0 }))
   newState.minimumRaise = newState.bigBlind
+  newState.actedThisRound = new Set()
 
   switch (state.currentPhase) {
     case 'pre-flop':
@@ -171,6 +174,11 @@ export function isBettingComplete(state: GameState): boolean {
   const active = state.players.filter(p => p.isActive && !p.isFolded && !p.isAllIn)
   if (active.length <= 1) return true
 
+  // All active players must have acted at least once this round
+  const allActed = active.every(p => state.actedThisRound.has(p.id))
+  if (!allActed) return false
+
+  // And all bets must be equal
   const maxBet = Math.max(...state.players.filter(p => !p.isFolded).map(p => p.currentBet))
   return active.every(p => p.currentBet === maxBet)
 }
@@ -203,9 +211,13 @@ export function applyAction(
   const newState = {
     ...state,
     players: state.players.map(p => ({ ...p })),
+    actedThisRound: new Set(state.actedThisRound),
   }
   const player = newState.players[playerIndex]
   const maxBet = Math.max(...newState.players.filter(p => !p.isFolded).map(p => p.currentBet))
+
+  // Mark player as having acted
+  newState.actedThisRound.add(player.id)
 
   switch (action) {
     case 'fold':
@@ -223,15 +235,15 @@ export function applyAction(
     }
     case 'raise': {
       const totalRaise = raiseAmount || newState.minimumRaise
-      const raiseTotal = Math.min(totalRaise, player.chips)
       const toCall = maxBet - player.currentBet
-      const totalCost = toCall + raiseTotal
-      const actualCost = Math.min(totalCost, player.chips)
-      player.chips -= actualCost
-      newState.pot += actualCost
-      player.currentBet += actualCost
-      newState.minimumRaise = raiseTotal
+      const totalCost = Math.min(toCall + totalRaise, player.chips)
+      player.chips -= totalCost
+      newState.pot += totalCost
+      player.currentBet += totalCost
+      newState.minimumRaise = totalRaise
       if (player.chips === 0) player.isAllIn = true
+      // A raise resets acted for everyone except the raiser
+      newState.actedThisRound = new Set([player.id])
       break
     }
     case 'all-in': {
@@ -240,6 +252,10 @@ export function applyAction(
       player.currentBet += allInAmount
       player.chips = 0
       player.isAllIn = true
+      // If all-in is effectively a raise, reset acted
+      if (player.currentBet > maxBet) {
+        newState.actedThisRound = new Set([player.id])
+      }
       break
     }
   }
