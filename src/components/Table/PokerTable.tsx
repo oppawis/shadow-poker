@@ -9,6 +9,10 @@ interface PokerTableProps {
 }
 
 export default function PokerTable({ gameState, showAllCards }: PokerTableProps) {
+  const humanPlayer = gameState.players.find(p => p.type === 'human')
+  const humanIndex = gameState.players.findIndex(p => p.type === 'human')
+  const isHumanActive = humanIndex === gameState.activePlayerIndex && gameState.currentPhase !== 'showdown'
+
   return (
     <div className="poker-table-container">
       <div className="particles">
@@ -50,6 +54,22 @@ export default function PokerTable({ gameState, showAllCards }: PokerTableProps)
             showCards={showAllCards}
           />
         ))}
+
+        {/* Human player's hand - large and prominent */}
+        {humanPlayer && humanPlayer.holeCards.length > 0 && (
+          <div className={`human-hand ${isHumanActive ? 'your-turn' : ''} ${humanPlayer.isFolded ? 'folded' : ''}`}>
+            <div className="human-hand-cards">
+              {humanPlayer.holeCards.map((card, i) => (
+                <CardComponent
+                  key={i}
+                  card={card}
+                  glowing={isHumanActive}
+                />
+              ))}
+            </div>
+            {isHumanActive && <div className="your-turn-label">YOUR TURN</div>}
+          </div>
+        )}
       </div>
     </div>
   )

@@ -100,3 +100,67 @@
   color: #d4af37;
   text-shadow: 0 0 10px rgba(212,175,55,0.4);
 }
+
+/* Human player's hand - large prominent cards at bottom */
+.human-hand {
+  position: absolute;
+  bottom: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 15;
+  transition: all 0.3s ease;
+}
+
+.human-hand.folded {
+  opacity: 0.3;
+  filter: grayscale(0.7);
+}
+
+.human-hand-cards {
+  display: flex;
+  gap: 12px;
+}
+
+.human-hand-cards .card {
+  width: 90px;
+  height: 130px;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+}
+
+.human-hand-cards .card .card-rank {
+  font-size: 20px;
+}
+
+.human-hand-cards .card .card-suit {
+  font-size: 16px;
+}
+
+.human-hand-cards .card .card-suit-large {
+  font-size: 36px;
+}
+
+.human-hand.your-turn .human-hand-cards .card {
+  filter: drop-shadow(0 0 20px rgba(212,175,55,0.5));
+}
+
+.your-turn-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #d4af37;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  animation: turnPulse 1.5s ease-in-out infinite;
+  background: rgba(0,0,0,0.6);
+  padding: 3px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(212,175,55,0.3);
+}
+
+@keyframes turnPulse {
+  0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(212,175,55,0.4); }
+  50% { opacity: 0.7; text-shadow: 0 0 16px rgba(212,175,55,0.7); }
+}

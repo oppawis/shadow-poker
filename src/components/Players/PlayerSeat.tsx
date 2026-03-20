@@ -33,17 +33,18 @@ export default function PlayerSeat({ player, isActive, isHuman, position, totalP
           <span className="player-bet">Bet: ${player.currentBet}</span>
         )}
       </div>
-      <div className="player-cards">
-        {player.holeCards.map((card, i) => (
-          <CardComponent
-            key={i}
-            card={card}
-            faceDown={!isHuman && !showCards}
-            small
-            glowing={isHuman && isActive}
-          />
-        ))}
-      </div>
+      {!isHuman && (
+        <div className="player-cards">
+          {player.holeCards.map((card, i) => (
+            <CardComponent
+              key={i}
+              card={card}
+              faceDown={!showCards}
+              small
+            />
+          ))}
+        </div>
+      )}
       {player.isDealer && <div className="dealer-button">D</div>}
     </div>
   )
@@ -52,7 +53,7 @@ export default function PlayerSeat({ player, isActive, isHuman, position, totalP
 function getPosition(index: number, total: number): { x: string; y: string } {
   // Player 0 (human) is at bottom center
   // AI players spread around the top semicircle
-  if (index === 0) return { x: '50%', y: '82%' }
+  if (index === 0) return { x: '50%', y: '72%' }
 
   const positions: Record<number, { x: string; y: string }[]> = {
     1: [{ x: '50%', y: '5%' }],
