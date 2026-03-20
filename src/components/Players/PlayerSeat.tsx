@@ -9,9 +9,10 @@ interface PlayerSeatProps {
   position: number
   totalPlayers: number
   showCards?: boolean
+  showdownHandDesc?: string
 }
 
-export default function PlayerSeat({ player, isActive, isHuman, position, totalPlayers, showCards }: PlayerSeatProps) {
+export default function PlayerSeat({ player, isActive, isHuman, position, totalPlayers, showCards, showdownHandDesc }: PlayerSeatProps) {
   const pos = getPosition(position, totalPlayers)
 
   return (
@@ -38,7 +39,7 @@ export default function PlayerSeat({ player, isActive, isHuman, position, totalP
           {player.lastAction}
         </div>
       )}
-      {!isHuman && (
+      {!isHuman && player.holeCards.length > 0 && (
         <div className="player-cards">
           {player.holeCards.map((card, i) => (
             <CardComponent
@@ -48,6 +49,9 @@ export default function PlayerSeat({ player, isActive, isHuman, position, totalP
               small
             />
           ))}
+          {showdownHandDesc && (
+            <div className="showdown-desc">{showdownHandDesc}</div>
+          )}
         </div>
       )}
       {player.isDealer && <div className="dealer-button">D</div>}

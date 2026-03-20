@@ -7,6 +7,7 @@ import {
   isBettingComplete, determineWinners, getNonFoldedPlayers, findNextActive
 } from '../engine/poker/gameState'
 import { getAIDecision, getAIThinkingTime } from '../engine/ai/aiEngine'
+import { evaluateHand } from '../engine/poker/handEvaluator'
 
 export type GameScreen = 'menu' | 'setup' | 'game' | 'tutorial' | 'stats' | 'gameover'
 
@@ -14,6 +15,14 @@ interface WinnerInfo {
   playerId: string
   amount: number
   handDescription: string
+}
+
+export interface ShowdownInfo {
+  [playerId: string]: {
+    revealed: boolean
+    handDescription: string
+    isWinner: boolean
+  }
 }
 
 export function useGameEngine() {
@@ -26,6 +35,7 @@ export function useGameEngine() {
     handsPlayed: 0, handsWon: 0, biggestPot: 0, bestHand: null, chipHistory: [1000],
   })
   const [showingResult, setShowingResult] = useState(false)
+  const [showdownInfo, setShowdownInfo] = useState<ShowdownInfo>({})
 
   const deckRef = useRef(new DeckManager())
   const processingRef = useRef(false)
@@ -68,6 +78,27 @@ export function useGameEngine() {
       handRank: result.find(w => w.playerId === 'player')?.hand.rank,
     }])
 
+    // Build showdown info - who shows/mucks
+    const winnerIds = new Set(result.map(w => w.playerId))
+    const sdInfo: ShowdownInfo = {}
+    const nonFolded = getNonFoldedPlayers(finalState)
+
+    for (const p of nonFolded) {
+      const hand = evaluateHand(p.holeCards, finalState.communityCards)
+      if (winnerIds.has(p.id)) {
+        // Winners always show
+        sdInfo[p.id] = { revealed: true, handDescription: hand.description, isWinner: true }
+      } else if (p.type === 'ai') {
+        // AI losers: ~40% show, 60% muck
+        const willShow = Math.random() < 0.4
+        sdInfo[p.id] = { revealed: willShow, handDescription: hand.description, isWinner: false }
+      } else {
+        // Human loser: pending choice (default to not revealed)
+        sdInfo[p.id] = { revealed: false, handDescription: hand.description, isWinner: false }
+      }
+    }
+
+    setShowdownInfo(sdInfo)
     setGameState(finalState)
     setWinners(winnerInfos)
     setShowingResult(true)
@@ -130,6 +161,7 @@ export function useGameEngine() {
     setGameState(newState)
     setScreen('game')
     setWinners(null)
+    setShowdownInfo({})
     setHandHistory([])
     setSessionStats({ handsPlayed: 0, handsWon: 0, biggestPot: 0, bestHand: null, chipHistory: [1000] })
 
@@ -137,31 +169,43 @@ export function useGameEngine() {
     if (firstPlayer && firstPlayer.type === 'ai') {
       processingRef.current = true
       setIsProcessing(true)
-      await runGameLoop(newState)
-      processingRef.current = false
-      setIsProcessing(false)
+      try {
+        await runGameLoop(newState)
+      } finally {
+        processingRef.current = false
+        setIsProcessing(false)
+      }
     }
   }, [runGameLoop])
 
   const handlePlayerAction = useCallback(async (action: PlayerAction, raiseAmount?: number) => {
-    if (!gameState || isProcessing) return
+    if (!gameState || processingRef.current) return
 
     processingRef.current = true
     setIsProcessing(true)
 
-    const newState = applyAction(gameState, gameState.activePlayerIndex, action, raiseAmount)
-    setGameState(newState)
+    try {
+      const newState = applyAction(gameState, gameState.activePlayerIndex, action, raiseAmount)
+      setGameState(newState)
+      await runGameLoop(newState)
+    } finally {
+      processingRef.current = false
+      setIsProcessing(false)
+    }
+  }, [gameState, runGameLoop])
 
-    await runGameLoop(newState)
-
-    processingRef.current = false
-    setIsProcessing(false)
-  }, [gameState, isProcessing, runGameLoop])
+  const handleMuckShow = useCallback((show: boolean) => {
+    setShowdownInfo(prev => ({
+      ...prev,
+      player: prev.player ? { ...prev.player, revealed: show } : prev.player,
+    }))
+  }, [])
 
   const nextHand = useCallback(async () => {
     if (!gameState) return
     setShowingResult(false)
     setWinners(null)
+    setShowdownInfo({})
 
     const player = gameState.players.find(p => p.id === 'player')
     if (!player || player.chips <= 0) {
@@ -185,16 +229,19 @@ export function useGameEngine() {
     if (firstPlayer && firstPlayer.type === 'ai') {
       processingRef.current = true
       setIsProcessing(true)
-      await runGameLoop(newState)
-      processingRef.current = false
-      setIsProcessing(false)
+      try {
+        await runGameLoop(newState)
+      } finally {
+        processingRef.current = false
+        setIsProcessing(false)
+      }
     }
   }, [gameState, runGameLoop])
 
   return {
     screen, setScreen, gameState, winners, isProcessing,
-    handHistory, sessionStats, showingResult,
-    startGame, handlePlayerAction, nextHand,
+    handHistory, sessionStats, showingResult, showdownInfo,
+    startGame, handlePlayerAction, nextHand, handleMuckShow,
     callAmount: gameState ? getCallAmount(gameState, gameState.activePlayerIndex) : 0,
     canCheckNow: gameState ? canCheck(gameState, gameState.activePlayerIndex) : false,
   }

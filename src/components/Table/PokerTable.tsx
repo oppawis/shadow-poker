@@ -1,14 +1,15 @@
 import { GameState } from '../../types'
+import { ShowdownInfo } from '../../hooks/useGameEngine'
 import CardComponent from '../Cards/Card'
 import PlayerSeat from '../Players/PlayerSeat'
 import './PokerTable.css'
 
 interface PokerTableProps {
   gameState: GameState
-  showAllCards?: boolean
+  showdownInfo?: ShowdownInfo
 }
 
-export default function PokerTable({ gameState, showAllCards }: PokerTableProps) {
+export default function PokerTable({ gameState, showdownInfo }: PokerTableProps) {
   const humanPlayer = gameState.players.find(p => p.type === 'human')
   const humanIndex = gameState.players.findIndex(p => p.type === 'human')
   const isHumanActive = humanIndex === gameState.activePlayerIndex && gameState.currentPhase !== 'showdown'
@@ -51,7 +52,8 @@ export default function PokerTable({ gameState, showAllCards }: PokerTableProps)
             isHuman={player.type === 'human'}
             position={index}
             totalPlayers={gameState.players.length}
-            showCards={showAllCards}
+            showCards={showdownInfo?.[player.id]?.revealed}
+            showdownHandDesc={showdownInfo?.[player.id]?.revealed ? showdownInfo[player.id].handDescription : undefined}
           />
         ))}
 

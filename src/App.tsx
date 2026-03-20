@@ -8,8 +8,8 @@ import Tutorial from './components/Tutorial/Tutorial'
 function App() {
   const {
     screen, setScreen, gameState, winners, isProcessing,
-    sessionStats, showingResult,
-    startGame, handlePlayerAction, nextHand,
+    sessionStats, showingResult, showdownInfo,
+    startGame, handlePlayerAction, nextHand, handleMuckShow,
     callAmount, canCheckNow,
   } = useGameEngine()
 
@@ -36,10 +36,12 @@ function App() {
           winners={winners}
           isProcessing={isProcessing}
           showingResult={showingResult}
+          showdownInfo={showdownInfo}
           callAmount={callAmount}
           canCheck={canCheckNow}
           onAction={handlePlayerAction}
           onNextHand={nextHand}
+          onMuckShow={handleMuckShow}
           onQuit={() => setScreen('menu')}
         />
       )}
