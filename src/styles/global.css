@@ -1,0 +1,52 @@
+:root {
+  /* Dark & Mysterious Theme */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a2e;
+  --bg-surface: #16213e;
+  --accent-gold: #d4af37;
+  --accent-red: #8b0000;
+  --accent-green: #004d00;
+  --glow-purple: #6a0dad;
+  --glow-blue: #1a237e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --text-gold: #d4af37;
+  --felt-green: #0d5e2e;
+  --table-border: #3e2723;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, var(--bg-secondary) 0%, var(--bg-primary) 70%);
+}

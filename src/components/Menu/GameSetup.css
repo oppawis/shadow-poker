@@ -1,0 +1,143 @@
+.game-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.back-btn {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+.back-btn:hover { color: #d4af37; }
+
+.setup-title {
+  font-size: 28px;
+  font-weight: 300;
+  color: #d4af37;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+}
+
+.setup-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.setup-label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.opponent-selector {
+  display: flex;
+  gap: 10px;
+}
+
+.opponent-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: #e0e0e0;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.opponent-btn.selected {
+  border-color: #d4af37;
+  background: rgba(212,175,55,0.15);
+  color: #d4af37;
+  box-shadow: 0 0 15px rgba(212,175,55,0.2);
+}
+
+.opponent-btn:hover:not(.selected) {
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.06);
+}
+
+.difficulty-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.difficulty-btn {
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: #e0e0e0;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.difficulty-btn.selected {
+  border-color: #d4af37;
+  background: rgba(212,175,55,0.1);
+}
+
+.difficulty-btn:hover:not(.selected) {
+  border-color: rgba(255,255,255,0.2);
+}
+
+.diff-name {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.difficulty-btn.easy .diff-name { color: #4ade80; }
+.difficulty-btn.medium .diff-name { color: #facc15; }
+.difficulty-btn.hard .diff-name { color: #ef4444; }
+
+.diff-desc {
+  font-size: 12px;
+  color: #888;
+}
+
+.setup-info {
+  display: flex;
+  gap: 20px;
+  color: #666;
+  font-size: 13px;
+}
+
+.start-btn {
+  padding: 16px 48px;
+  border-radius: 12px;
+  border: 1px solid rgba(212,175,55,0.5);
+  background: linear-gradient(145deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05));
+  color: #d4af37;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 2px;
+}
+
+.start-btn:hover {
+  background: linear-gradient(145deg, rgba(212,175,55,0.25), rgba(212,175,55,0.1));
+  box-shadow: 0 0 30px rgba(212,175,55,0.3);
+  transform: translateY(-2px);
+}

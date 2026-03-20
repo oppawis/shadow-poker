@@ -1,0 +1,129 @@
+.game-over {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 70%);
+}
+
+.game-over-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.go-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  bottom: -10px;
+  animation: floatUp linear infinite;
+}
+
+.go-particle.gold {
+  background: radial-gradient(circle, rgba(212,175,55,0.8), transparent);
+}
+
+.go-particle.dark {
+  background: radial-gradient(circle, rgba(139,0,0,0.5), transparent);
+}
+
+.game-over-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  z-index: 2;
+}
+
+.game-over-title {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  margin: 0;
+}
+
+.game-over-title.victory {
+  color: #d4af37;
+  text-shadow: 0 0 40px rgba(212,175,55,0.5);
+}
+
+.game-over-title.defeat {
+  color: #8b0000;
+  text-shadow: 0 0 40px rgba(139,0,0,0.5);
+}
+
+.game-over-sub {
+  font-size: 16px;
+  color: #888;
+  margin: 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 360px;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #d4af37;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.game-over-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.go-btn {
+  padding: 12px 32px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.play-again {
+  border: 1px solid rgba(212,175,55,0.4);
+  background: linear-gradient(145deg, rgba(212,175,55,0.15), transparent);
+  color: #d4af37;
+}
+.play-again:hover {
+  box-shadow: 0 0 20px rgba(212,175,55,0.3);
+}
+
+.to-menu {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: #888;
+}
+.to-menu:hover {
+  border-color: rgba(255,255,255,0.2);
+  color: #e0e0e0;
+}

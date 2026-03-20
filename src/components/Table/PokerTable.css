@@ -1,0 +1,102 @@
+.poker-table-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, rgba(212,175,55,0.8), transparent);
+  border-radius: 50%;
+  bottom: -10px;
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100vh) scale(0.3); opacity: 0; }
+}
+
+.poker-table {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.table-felt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55%;
+  height: 50%;
+  background: radial-gradient(ellipse, #0d5e2e 0%, #0a4a24 50%, #073d1c 100%);
+  border-radius: 50%;
+  border: 8px solid #3e2723;
+  box-shadow:
+    0 0 0 4px #5d4037,
+    0 0 0 8px #3e2723,
+    0 0 40px rgba(0,0,0,0.6),
+    inset 0 0 60px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.community-cards {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.card-placeholder {
+  width: 70px;
+  height: 100px;
+  border-radius: 8px;
+  border: 2px dashed rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.2);
+}
+
+.pot-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+  padding: 6px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(212,175,55,0.3);
+}
+
+.pot-label {
+  font-size: 10px;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.pot-amount {
+  font-size: 22px;
+  font-weight: 700;
+  color: #d4af37;
+  text-shadow: 0 0 10px rgba(212,175,55,0.4);
+}
